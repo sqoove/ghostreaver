@@ -1,0 +1,18 @@
+# =======================================================================
+# Wallet Configuration File
+# -----------------------------------------------------------------------
+# Define wallet parameters for the trading bot
+# Ensure values are correct and associated to an existing Solana wallet
+# =======================================================================
+
+# === Wallet ===
+wallet:
+    # The public address of your Solana wallet used to receive tokens, monitor balances, and interact with on-chain programs.
+    # This is safe to share with others and is required for executing trades or receiving funds.
+    # Make sure this matches the account you intend to use for trading or staking operations.
+    publicaddr: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+    # The private key of your Solana wallet, used to sign transactions and authorize on-chain activity.
+    # This key must be kept secret at all times—anyone with access can control your funds.
+    # Store it securely (e.g., encrypted file or hardware wallet) and never expose it in public repositories.
+    privatekey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

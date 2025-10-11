@@ -1,0 +1,231 @@
+# =======================================================================
+# Trading Bot Configuration File
+# -----------------------------------------------------------------------
+# Define core parameters for the trading bot
+# Ensure values are aligned with your strategy, risk appetite, and goals
+# =======================================================================
+
+# == Main ==
+main:
+    # Enables or disables the bot globally.
+    # When set to false, the bot will halt all activity without deleting this config.
+    # Useful for quickly pausing operations without removing or modifying logic.
+    status: true
+
+    # Activates paper trading mode (no real transactions).
+    # Trades are simulated and no real funds are used, ideal for dry runs.
+    # Allows testing strategies in a safe environment before going live.
+    sandbox: false
+
+    # Enables detailed logging of trading operations and events.
+    # Useful for troubleshooting issues and verifying execution flow.
+    # Produces more verbose console and file outputs for developers.
+    debug: true
+
+    # Starting virtual balance in SOL when running in sandbox mode.
+    # This value simulates your available wallet funds during testing.
+    # Only used if sandbox mode is set to true.
+    balance: 1.87688
+
+    # Maximum number of concurrent open trades allowed at any time.
+    # Helps control total capital exposure and portfolio risk.
+    # Set to 0 to allow unlimited concurrent trades.
+    opentrades: 1
+
+    # Maximum number of trades the bot will execute in total before halting.
+    # Acts as a session limit to control total trading activity and exposure.
+    # Set to 0 for unlimited trades without stopping automatically.
+    maxtrades: 1
+
+# == Monitoring ==
+monitoring:
+    # Determines which DEX programs should be scanned for opportunities.
+    # Set to "all" to include every supported DEX, or specify the program you want to monitor.
+    # Filters which trading venues the bot will actively monitor.
+    # - Bonk: "LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj"
+    # - Pumpfun: "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
+    # - Pumpswap: "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"
+    # - RaydiumAMM: "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+    # - RaydiumCLMM: "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK"
+    # - RaydiumCPMM: "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
+    programs: "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"
+
+    # Defines which decentralized exchange program IDs to track in real time.
+    # Allows restricting scans to specific venues for targeted trading strategies.
+    # Essential for controlling resource usage and focusing on preferred liquidity sources.
+    retries: 10
+
+# == Orders ==
+orders:
+    # Amount of SOL allocated to each individual buy order.
+    # Defines how much is risked per token and determines position sizing.
+    # Impacts capital efficiency and exposure per trade.
+    amount: 0.001
+
+    # Maximum tolerated slippage when entering a position (buy).
+    # Expressed in %, here 0.1 = 0.1%. Works as a guardrail in case price moves at swap time.
+    # Protects against paying too much if the market shifts suddenly.
+    buyslippage: 0.1
+
+    # Maximum tolerated slippage when exiting a position (sell).
+    # Usually set higher than buy to increase the chance of closing in volatile markets.
+    # Here 1.2 = 1.2%. If actual slippage exceeds this, the sell is rejected.
+    sellslippage: 1.2
+
+    # Percentage drop from the entry price that will trigger an automatic sell.
+    # Acts as a stop-loss mechanism to cap potential losses on trades.
+    # Expressed value is a decimal fraction: 0.40 = 40%.
+    stoploss: 0.40
+
+    # Percentage gain that will trigger an automatic take-profit sell.
+    # Ensures you secure profits once a target return is reached.
+    # Expressed value is a decimal fraction: 10.0 = 1000%.
+    takeprofit: 10.0
+
+    # Percentage gain from entry price that will activate the partial sell.
+    # Once this gain threshold is reached, the bot sells the defined partial amount.
+    # Works together with partialsell to secure profits progressively.
+    partialtrigger: 0.3
+
+    # Percentage of the position to sell when the partial sell trigger is activated.
+    # Allows taking some profit off the table while keeping the rest of the trade open.
+    # Helps reduce risk exposure and secure gains before full exit.
+    partialsell: 0.4
+
+    # Additional percentage gain from entry price to activate a second partial sell.
+    # Triggered only after the first partial trigger and partial sell have been executed.
+    # Enables further profit locking while letting the remainder of the position run.
+    trailingtrigger: 0.25
+
+    # Percentage of the remaining position to sell when the trailingtrigger is activated.
+    # Provides a second round of profit-taking while still keeping part of the trade open.
+    # Works with trailingtrigger to maximize profits in extended upward moves.
+    trailingsell: 0.30
+
+    # Percentage decline from the peak price after entry that will trigger a sell.
+    # Allows profits to run while locking in gains on reversal.
+    # Expressed value is a decimal fraction: 0.15 = 15%.
+    trailingstop: 0.15
+
+    # Percentage drop tolerated once trailing is active before closing the trade.
+    # Defines how much profit can be given back after the peak is reached.
+    # Expressed value is a decimal fraction: 0.05 = 5%.
+    trailingdrop: 0.05
+
+    # Maximum time (in milliseconds) a trade can stay open before being auto-closed.
+    # Useful for cycling capital and avoiding getting stuck in dead positions.
+    # Once this time elapses, the trade is exited regardless of profit or loss.
+    timeclose: 240000
+
+    # Maximum number of consecutive quote failures before force discard a trade.
+    # Helps prevent infinite loops when price data is unavailable or unstable.
+    # Once this limit is reached, the trade is closed with "MaxRetries" reason.
+    attempts: 10
+
+    # Maximum allowed liquidity drop (ratio, e.g., 0.3 = 30%).
+    # Protects against sudden rug pulls by comparing current liquidity to baseline.
+    # If the drop exceeds this threshold, the trade is closed immediately.
+    dropmax: 0.3
+
+# == Priority ==
+priority:
+    # Priority fee (lamports) applied when buying.
+    # A moderate value (e.g., 500000 = 0.0005 SOL) is enough in most cases.
+    # Lower than sell because missing a buy is less critical than missing an exit.
+    inputfees: 500000
+
+    # Priority fee (lamports) applied when selling.
+    # Set higher (e.g., 1000000 = 0.001 SOL) to make sure the transaction is confirmed fast.
+    # Critical for exits so you don’t get stuck during heavy network congestion.
+    outputfees: 1000000
+
+# == Rules ==
+rules:
+    # Rejects tokens older than the specified age in milliseconds (ms).
+    # This ensures the bot only focuses on very new opportunities.
+    # Prevents trades on tokens that are already pumped and losing momentum.
+    maxtokenage: 25000
+
+    # ================
+    # == Bonk Setup ==
+    # ================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    bonkmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from Bonk trades.
+    bonkexit: 90000
+
+    # ===================
+    # == Pumpfun Setup ==
+    # ===================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    pumpfunmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from PumpFun trades.
+    pumpfunexit: 25000
+
+    # ====================
+    # == Pumpswap Setup ==
+    # ====================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    pumpswapmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from PumpSwap trades.
+    pumpswapexit: 90000
+
+    # ======================
+    # == RaydiumAMM Setup ==
+    # ======================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    raydiumammmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from RaydiumAMM trades.
+    raydiumammexit: 90000
+
+    # =======================
+    # == RaydiumCLMM Setup ==
+    # =======================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    raydiumclmmmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from RaydiumCLMM trades.
+    raydiumclmmexit: 90000
+
+    # =======================
+    # == RaydiumCPMM Setup ==
+    # =======================
+
+    # Maximum acceptable token units to avoid overvalued entries.
+    # Caps buys on already-pumped tokens to reduce chase risk.
+    # Trades are rejected if token units exceeds this value.
+    raydiumcpmmmaxtokens: 9999999999999999
+
+    # Maximum time (ms) before exiting if no trailing stop is triggered.
+    # Protects against being stuck in inactive or sideways markets.
+    # Acts as a safety timeout to force an exit from RaydiumCPMM trades.
+    raydiumcpmmexit: 90000

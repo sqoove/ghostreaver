@@ -1,0 +1,23 @@
+# =======================================================================
+# Solana RPC Settings
+# -----------------------------------------------------------------------
+# Define core parameters of your trading bot endpoint
+# Configure the essential endpoint settings for connecting to the Solana network
+# =======================================================================
+
+# === Endpoint ===
+endpoint:
+    # RPC (Remote Procedure Call) endpoint URL used to send transactions,
+    # fetch account data, and interact with the Solana blockchain.
+    # You can replace this with a custom RPC provider (e.g., Helius, QuickNode, or Alchemy).
+    rpc: "http://127.0.0.1:8899"
+
+    # The Geyser server address (using gRPC) to receive real-time blockchain event streams.
+    # Powers the bot with low-latency data directly from a Solana node running the Geyser plugin.
+    # Used to detect mints, swaps, and critical instructions with minimal delay.
+    geyser: "http://127.0.0.1:10000"
+
+    # Optional authentication token for accessing the Geyser stream via API or proxy.
+    # Ensures secure or restricted access if the Geyser endpoint is protected by a custom token.
+    # Required when using a custom or shared Geyser gateway (e.g., behind a load balancer with API key).
+    xtoken: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
