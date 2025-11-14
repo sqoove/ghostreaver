@@ -2,8 +2,8 @@
 name = "ghostreaver"
 version = "0.1.0"
 edition = "2024"
-authors = ["NeosLab <support@neoslab.com>"]
-repository = "https://github.com/neoslabx/ghostreaver"
+authors = ["Sqoove <support@sqoove.com>"]
+repository = "https://github.com/sqoove/ghostreaver"
 description = "A lightweight Rust SDK and library for real-time event streaming and interaction with Solana DEX trading programs. Supports Bonk, PumpFun, PumpSwap and Raydium protocols with Yellowstone gRPC"
 license = "MIT"
 keywords = ["solana", "streaming", "events", "grpc", "interaction"]
