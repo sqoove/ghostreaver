@@ -136,7 +136,7 @@ priority:
 
     # Priority fee (lamports) applied when selling.
     # Set higher (e.g., 1000000 = 0.001 SOL) to make sure the transaction is confirmed fast.
-    # Critical for exits so you don’t get stuck during heavy network congestion.
+    # Critical for exits so you don't get stuck during heavy network congestion.
     outputfees: 1000000
 
 # == Rules ==
